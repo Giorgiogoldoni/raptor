@@ -3,157 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAPTOR ONE - DASHBOARD</title>
+    <title>RAPTOR ONE - Advanced Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8fafc; color: #1e293b; }
-        .card { background: white; border: 1px solid #e2e8f0; transition: all 0.2s; }
-        .buy-row { border-left: 4px solid #10b981; }
-        .sell-row { border-left: 4px solid #ef4444; }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .card { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .row-hover:hover { background-color: #f1f5f9; cursor: pointer; transition: all 0.2s; }
+        .buy-text { color: #10b981; font-weight: 800; }
+        .sell-text { color: #ef4444; font-weight: 800; }
+        .wait-text { color: #f59e0b; font-weight: 800; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-10">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+    <div class="max-w-7xl mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
-                <h1 class="text-3xl font-black tracking-tighter text-blue-600">RAPTOR <span class="text-slate-400">ONE</span></h1>
-                <p id="lastUpdate" class="text-xs text-slate-400 font-mono italic uppercase"></p>
+                <h1 class="text-4xl font-black tracking-tighter text-slate-900">RAPTOR <span class="text-blue-600">ONE</span></h1>
+                <p id="lastUpdate" class="text-xs font-mono text-slate-500 mt-1 uppercase tracking-widest"></p>
             </div>
-            <input type="text" id="search" placeholder="Cerca ticker o nome..." 
-                   class="w-full md:w-80 p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-sm">
+            <div class="relative w-full md:w-96">
+                <input type="text" id="searchBox" placeholder="Cerca ticker o nome strumento..." 
+                    class="w-full p-4 pl-12 rounded-2xl border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <svg class="w-5 h-5 absolute left-4 top-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
         </header>
 
-        <div id="filterBar" class="flex flex-wrap gap-2 mb-8">
-            <button onclick="filterCat('TUTTI')" class="px-4 py-2 rounded-full text-xs font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">TUTTI</button>
-        </div>
+        <div id="filterContainer" class="flex flex-wrap gap-2 mb-6">
+            </div>
 
-        <div class="card rounded-2xl shadow-sm overflow-hidden">
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-500 tracking-wider">
-                    <tr>
-                        <th class="p-4 w-16 text-center">Trend</th>
-                        <th class="p-4">Strumento</th>
-                        <th class="p-4">Prezzo</th>
-                        <th class="p-4">KAMA V (10,5,20)</th>
-                        <th class="p-4">KAMA L (10,2,30)</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody" class="divide-y divide-slate-100">
-                    </tbody>
-            </table>
+        <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr class="text-[11px] uppercase tracking-wider text-slate-500 font-bold">
+                            <th class="p-5 w-24 text-center">Trend</th>
+                            <th class="p-5">Strumento / Categoria</th>
+                            <th class="p-5 text-center">Data Inizio</th>
+                            <th class="p-5">Prezzo Attuale</th>
+                            <th class="p-5">KAMA Veloce (10,5,20)</th>
+                            <th class="p-5">KAMA Lenta (10,2,30)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mainTable" class="divide-y divide-slate-100">
+                        </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        let fullData = [];
-        let activeFilter = 'TUTTI';
+        let rawData = [];
+        let currentFilter = 'TUTTI';
 
-        async function loadData() {
+        async function fetchData() {
             try {
-                const response = await fetch('data.json?v=' + Date.now());
-                const json = await response.json();
-                fullData = json.data;
-                document.getElementById('lastUpdate').innerText = "Ultimo aggiornamento: " + json.last_update;
+                const res = await fetch('data.json?nocache=' + new Date().getTime());
+                const json = await res.json();
+                rawData = json.data;
+                document.getElementById('lastUpdate').innerText = "Update: " + json.last_update;
                 
-                setupFilters();
-                renderTable();
-            } catch (e) { console.error("Errore caricamento dati", e); }
+                generateFilters();
+                renderUI();
+            } catch (err) {
+                console.error("Errore caricamento dati:", err);
+            }
         }
 
-        function setupFilters() {
-            const cats = ['TUTTI', ...new Set(fullData.map(item => item.categoria))];
-            const bar = document.getElementById('filterBar');
-            bar.innerHTML = '';
-            cats.forEach(c => {
+        function generateFilters() {
+            const categories = ['TUTTI', ...new Set(rawData.map(item => item.categoria))];
+            const container = document.getElementById('filterContainer');
+            container.innerHTML = '';
+            
+            categories.forEach(cat => {
                 const btn = document.createElement('button');
-                btn.className = `px-4 py-2 rounded-full text-[10px] font-bold border transition ${activeFilter === c ? 'bg-blue-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`;
-                btn.innerText = c.toUpperCase();
-                btn.onclick = () => { activeFilter = c; renderTable(); setupFilters(); };
-                bar.appendChild(btn);
+                btn.className = `px-5 py-2 rounded-xl text-[11px] font-extrabold transition-all border ${currentFilter === cat ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`;
+                btn.innerText = cat.toUpperCase();
+                btn.onclick = () => { currentFilter = cat; generateFilters(); renderUI(); };
+                container.appendChild(btn);
             });
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            const searchTerm = document.getElementById('search').value.toLowerCase();
-            tbody.innerHTML = '';
+        function renderUI() {
+            const table = document.getElementById('mainTable');
+            const search = document.getElementById('searchBox').value.toLowerCase();
+            table.innerHTML = '';
 
-            const filtered = fullData.filter(d => {
-                const matchesSearch = d.ticker.toLowerCase().includes(searchTerm) || d.nome.toLowerCase().includes(searchTerm);
-                const matchesCat = activeFilter === 'TUTTI' || d.categoria === activeFilter;
-                return matchesSearch && matchesCat;
+            const filtered = rawData.filter(d => {
+                const matchSearch = d.ticker.toLowerCase().includes(search) || d.nome.toLowerCase().includes(search);
+                const matchCat = currentFilter === 'TUTTI' || d.categoria === currentFilter;
+                return matchSearch && matchCat;
             });
 
-            filtered.forEach((item, index) => {
-                const isBuy = item.price >= item.kama_v;
-                const isExit = item.price < item.kama_l;
-                const statusColor = isExit ? 'bg-red-500' : (isBuy ? 'bg-green-500' : 'bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]');
-                
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 cursor-pointer transition";
-                tr.onclick = () => toggleChart(index);
-                tr.innerHTML = `
-                    <td class="p-4 text-center"><span class="status-dot ${statusColor}"></span></td>
-                    <td class="p-4">
-                        <div class="font-bold text-blue-800 text-sm">${item.ticker}</div>
-                        <div class="text-[10px] text-slate-400 uppercase">${item.nome}</div>
+            filtered.forEach((item, idx) => {
+                let statusInfo = { label: 'WAIT', color: 'bg-yellow-400', text: 'wait-text' };
+                if (item.status === 'BUY') statusInfo = { label: 'BUY', color: 'bg-green-500', text: 'buy-text' };
+                if (item.status === 'SELL') statusInfo = { label: 'EXIT', color: 'bg-red-500', text: 'sell-text' };
+
+                const row = document.createElement('tr');
+                row.className = 'row-hover';
+                row.onclick = () => toggleChart(idx);
+                row.innerHTML = `
+                    <td class="p-5 text-center">
+                        <span class="status-dot ${statusInfo.color} mb-1 shadow-sm"></span>
+                        <div class="text-[10px] ${statusInfo.text}">${statusInfo.label}</div>
                     </td>
-                    <td class="p-4 font-mono font-bold text-sm">${item.price.toFixed(3)}</td>
-                    <td class="p-4 font-mono text-xs text-slate-500">${item.kama_v.toFixed(3)}</td>
-                    <td class="p-4 font-mono text-xs text-slate-500">${item.kama_l.toFixed(3)}</td>
-                `;
-                
-                const chartTr = document.createElement('tr');
-                chartTr.id = `chartRow-${index}`;
-                chartTr.className = "hidden bg-white";
-                chartTr.innerHTML = `
-                    <td colspan="5" class="p-4 border-t border-b border-slate-50">
-                        <div class="h-64 w-full"><canvas id="chart-${index}"></canvas></div>
+                    <td class="p-5">
+                        <div class="font-extrabold text-slate-900">${item.ticker}</div>
+                        <div class="text-[10px] text-slate-400 font-medium uppercase">${item.nome}</div>
+                    </td>
+                    <td class="p-5 text-center text-xs font-semibold text-slate-600">
+                        ${item.signal_date || '--/--/--'}
+                    </td>
+                    <td class="p-5 font-mono text-sm font-bold text-blue-600">
+                        ${item.price.toFixed(3)}
+                    </td>
+                    <td class="p-5 font-mono text-xs text-slate-400">
+                        ${item.kama_v.toFixed(3)}
+                    </td>
+                    <td class="p-5 font-mono text-xs text-slate-400">
+                        ${item.kama_l.toFixed(3)}
                     </td>
                 `;
-                
-                tbody.appendChild(tr);
-                tbody.appendChild(chartTr);
+
+                const chartRow = document.createElement('tr');
+                chartRow.id = `chart-row-${idx}`;
+                chartRow.className = 'hidden bg-slate-50';
+                chartRow.innerHTML = `
+                    <td colspan="6" class="p-8">
+                        <div class="h-72 w-full"><canvas id="canvas-${idx}"></canvas></div>
+                    </td>
+                `;
+
+                table.appendChild(row);
+                table.appendChild(chartRow);
             });
         }
 
-        function toggleChart(index) {
-            const row = document.getElementById(`chartRow-${index}`);
-            const isHidden = row.classList.contains('hidden');
+        function toggleChart(idx) {
+            const row = document.getElementById(`chart-row-${idx}`);
+            const isVisible = !row.classList.contains('hidden');
             
-            // Chiudi tutti gli altri
-            document.querySelectorAll('[id^="chartRow-"]').forEach(r => r.classList.add('hidden'));
-            
-            if (isHidden) {
+            // Chiudi tutti i grafici aperti
+            document.querySelectorAll('[id^="chart-row-"]').forEach(r => r.classList.add('hidden'));
+
+            if (!isVisible) {
                 row.classList.remove('hidden');
-                const ctx = document.getElementById(`chart-${index}`).getContext('2d');
-                const d = fullData[index].history;
+                const ctx = document.getElementById(`canvas-${idx}`).getContext('2d');
+                const history = rawData[idx].history;
 
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: d.dates,
+                        labels: history.dates,
                         datasets: [
-                            { label: 'Prezzo', data: d.prices, borderColor: '#1e293b', borderWidth: 2, pointRadius: 0, fill: false },
-                            { label: 'KAMA V', data: d.kv, borderColor: '#10b981', borderWidth: 1.5, pointRadius: 0, fill: false },
-                            { label: 'KAMA L', data: d.kl, borderColor: '#ef4444', borderWidth: 1.5, pointRadius: 0, fill: 1, backgroundColor: 'rgba(16, 185, 129, 0.1)' }
+                            { label: 'Prezzo', data: history.prices, borderColor: '#0f172a', borderWidth: 2, pointRadius: 0, fill: false },
+                            { label: 'KAMA V', data: history.kv, borderColor: '#10b981', borderWidth: 1.5, pointRadius: 0, fill: false },
+                            { label: 'KAMA L', data: history.kl, borderColor: '#ef4444', borderWidth: 1.5, pointRadius: 0, 
+                              fill: 1, backgroundColor: 'rgba(16, 185, 129, 0.05)' }
                         ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
-                        scales: { x: { display: true, ticks: { size: 9 } }, y: { position: 'right' } }
+                        scales: { 
+                            x: { grid: { display: false }, ticks: { size: 9 } },
+                            y: { position: 'right', grid: { color: '#f1f5f9' } }
+                        }
                     }
                 });
             }
         }
 
-        document.getElementById('search').oninput = renderTable;
-        window.onload = loadData;
+        document.getElementById('searchBox').addEventListener('input', renderUI);
+        window.onload = fetchData;
     </script>
 </body>
 </html>
