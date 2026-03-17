@@ -5,9 +5,8 @@ import json
 from datetime import datetime
 import time
 
-# --- ARCHITETTURA RAPTOR: LISTA INTEGRALE AGGIORNATA ---
+# --- LISTA INTEGRALE ASSET ---
 TICKERS_CONFIG = [
-    # --- I TUOI NUOVI TICKER AGGIUNTI ---
     {"t": "3OIS.MI", "n": "3x Short Oil", "c": "COMMODITIES"},
     {"t": "LOIL.MI", "n": "2x Long Oil", "c": "COMMODITIES"},
     {"t": "SOIL.MI", "n": "2x Short Oil", "c": "COMMODITIES"},
@@ -57,13 +56,9 @@ TICKERS_CONFIG = [
     {"t": "3BUS.MI", "n": "3x Long Brent", "c": "COMMODITIES"},
     {"t": "3BRS.MI", "n": "3x Short Brazil", "c": "INDICI LEVA"},
     {"t": "LAGR.MI", "n": "2x Long Agriculture", "c": "COMMODITIES"},
-
-    # --- TICKER CORE (CEDOLE / CRYPTO / ETF) ---
     {"t": "LQQ.PA", "n": "Nasdaq 2x Long", "c": "ETF LEVA"},
     {"t": "BTC-USD", "n": "Bitcoin", "c": "CRYPTO"},
-    {"t": "ETH-USD", "n": "Ethereum", "c": "CRYPTO"},
-    {"t": "3LNV.MI", "n": "3x Long NVIDIA", "c": "GRANITESHARES"},
-    {"t": "3LTS.MI", "n": "3x Long Tesla", "c": "GRANITESHARES"}
+    {"t": "ETH-USD", "n": "Ethereum", "c": "CRYPTO"}
 ]
 
 def calcola_kama(series, period=10, fast=2, slow=30):
@@ -80,37 +75,35 @@ def calcola_kama(series, period=10, fast=2, slow=30):
 
 def process_asset(asset):
     try:
-        df = yf.download(asset['t'], period="150d", interval="1d", progress=False)
-        if df.empty: return None
+        df = yf.download(asset['t'], period="200d", interval="1d", progress=False)
+        if df.empty or len(df) < 50: return None
         if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
         
         close = df['Close'].ffill().dropna()
-        if len(close) < 50: return None
+        kv_all = calcola_kama(close, 10, 5, 20)
+        kl_all = calcola_kama(close, 10, 2, 30)
 
-        kv = calcola_kama(close, 10, 5, 20)
-        kl = calcola_kama(close, 10, 2, 30)
-
-        last_p, last_kv, last_kl = float(close.iloc[-1]), float(kv[-1]), float(kl[-1])
-        status = "WAIT"
-        if last_p > last_kv > last_kl: status = "BUY"
-        elif last_p < last_kv < last_kl: status = "SELL"
-
+        last_p, last_kv, last_kl = float(close.iloc[-1]), float(kv_all[-1]), float(kl_all[-1])
+        
         return {
             "ticker": asset['t'], "nome": asset['n'], "categoria": asset['c'],
             "price": round(last_p, 3), "kama_v": round(last_kv, 3), "kama_l": round(last_kl, 3),
-            "status": status, "signal_date": datetime.now().strftime("%d/%m/%Y"),
-            "history": { "prices": [float(x) for x in close.tail(15).values] }
+            "status": "BUY" if last_p > last_kv > last_kl else ("SELL" if last_p < last_kv < last_kl else "WAIT"),
+            "signal_date": datetime.now().strftime("%d/%m/%Y"),
+            "history": {
+                "prices": [round(float(x), 2) for x in close.tail(180).values],
+                "kv": [round(float(x), 2) for x in kv_all[-180:]],
+                "kl": [round(float(x), 2) for x in kl_all[-180:]],
+                "dates": close.tail(180).index.strftime('%d/%m').tolist()
+            }
         }
-    except Exception: return None
+    except: return None
 
-# ESECUZIONE
 results = []
-print(f"Avvio analisi su {len(TICKERS_CONFIG)} asset...")
 for a in TICKERS_CONFIG:
     res = process_asset(a)
     if res: results.append(res)
-    time.sleep(0.3) # Pausa per non essere bloccati da Yahoo
+    time.sleep(0.4)
 
 with open('data.json', 'w') as f:
     json.dump({"last_update": datetime.now().strftime("%d/%m/%Y %H:%M"), "data": results}, f, indent=4)
-print(f"Completato! {len(results)} asset salvati.")
