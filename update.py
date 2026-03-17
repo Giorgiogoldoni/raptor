@@ -5,65 +5,65 @@ import json
 from datetime import datetime
 import time
 
-# --- ARCHITETTURA RAPTOR: LISTA COMPLETA 128+ ASSET ---
+# --- ARCHITETTURA RAPTOR: LISTA INTEGRALE AGGIORNATA ---
 TICKERS_CONFIG = [
-    # ETF LEVA 2X / 5X
-    {"t": "LQQ.PA", "n": "Amundi Nasdaq 2x", "c": "ETF LEVA"},
-    {"t": "CL2.PA", "n": "Amundi MSCI USA 2x", "c": "ETF LEVA"},
-    {"t": "DAXLEV.PA", "n": "Amundi LevDax 2x", "c": "ETF LEVA"},
-    {"t": "XS2L.MI", "n": "Xtrackers S&P 500 2x", "c": "ETF LEVA"},
-    {"t": "5MIB.MI", "n": "FTSE MIB 5x Long", "c": "ETF LEVA"},
-    # ETF INVERSE
-    {"t": "XSD2.MI", "n": "ShortDAX x2 Daily", "c": "ETF INVERSE"},
-    {"t": "XSDX.MI", "n": "ShortDAX Daily", "c": "ETF INVERSE"},
-    {"t": "XSPS.MI", "n": "S&P 500 Inverse", "c": "ETF INVERSE"},
-    # GRANITESHARES 3X LONG (MILANO)
-    {"t": "3LNV.MI", "n": "3x Long NVIDIA", "c": "LEVA 3X"},
-    {"t": "3LTS.MI", "n": "3x Long Tesla", "c": "LEVA 3X"},
-    {"t": "3LMI.MI", "n": "3x Long MicroStrategy", "c": "LEVA 3X"},
-    {"t": "3LCO.MI", "n": "3x Long Coinbase", "c": "LEVA 3X"},
-    {"t": "3LCR.MI", "n": "3x Long UniCredit", "c": "LEVA 3X"},
-    {"t": "3LFB.MI", "n": "3x Long Meta", "c": "LEVA 3X"},
-    {"t": "3LAA.MI", "n": "3x Long Alibaba", "c": "LEVA 3X"},
-    {"t": "3LRP.MI", "n": "3x Long Ripple", "c": "LEVA 3X"},
-    {"t": "3LAD.MI", "n": "3x Long AMD", "c": "LEVA 3X"},
-    {"t": "3LAV.MI", "n": "3x Long Broadcom", "c": "LEVA 3X"},
-    {"t": "3LMS.MI", "n": "3x Long Microsoft", "c": "LEVA 3X"},
-    {"t": "3LAP.MI", "n": "3x Long Apple", "c": "LEVA 3X"},
-    {"t": "3LGO.MI", "n": "3x Long Google", "c": "LEVA 3X"},
-    {"t": "3LAM.MI", "n": "3x Long Amazon", "c": "LEVA 3X"},
-    {"t": "3LNF.MI", "n": "3x Long Netflix", "c": "LEVA 3X"},
-    {"t": "3LPL.MI", "n": "3x Long Palantir", "c": "LEVA 3X"},
-    {"t": "3LUM.MI", "n": "3x Long Uber", "c": "LEVA 3X"},
-    # GRANITESHARES 3X SHORT
-    {"t": "3SNV.MI", "n": "3x Short NVIDIA", "c": "LEVA 3X SHORT"},
-    {"t": "3STS.MI", "n": "3x Short Tesla", "c": "LEVA 3X SHORT"},
-    {"t": "3SMI.MI", "n": "3x Short MicroStrategy", "c": "LEVA 3X SHORT"},
-    {"t": "3SFB.MI", "n": "3x Short Meta", "c": "LEVA 3X SHORT"},
-    {"t": "3SCR.MI", "n": "3x Short UniCredit", "c": "LEVA 3X SHORT"},
-    {"t": "3SMS.MI", "n": "3x Short Microsoft", "c": "LEVA 3X SHORT"},
-    {"t": "3SAP.MI", "n": "3x Short Apple", "c": "LEVA 3X SHORT"},
-    # COMMODITIES & BONDS
-    {"t": "LOIL.MI", "n": "WTI Oil 2x Lev", "c": "COMMODITIES"},
-    {"t": "LWEA.MI", "n": "Wheat 2x Lev", "c": "COMMODITIES"},
-    {"t": "LSUG.MI", "n": "Sugar 2x Lev", "c": "COMMODITIES"},
-    {"t": "3TYL.MI", "n": "US 10Y 3x Long", "c": "BONDS"},
-    {"t": "3TYS.MI", "n": "US 10Y 3x Short", "c": "BONDS"},
-    # CRYPTO
+    # --- I TUOI NUOVI TICKER AGGIUNTI ---
+    {"t": "3OIS.MI", "n": "3x Short Oil", "c": "COMMODITIES"},
+    {"t": "LOIL.MI", "n": "2x Long Oil", "c": "COMMODITIES"},
+    {"t": "SOIL.MI", "n": "2x Short Oil", "c": "COMMODITIES"},
+    {"t": "LWEA.MI", "n": "2x Long Wheat", "c": "COMMODITIES"},
+    {"t": "3TYS.MI", "n": "3x Short US 10Y", "c": "BONDS"},
+    {"t": "3TYL.MI", "n": "3x Long US 10Y", "c": "BONDS"},
+    {"t": "LSUG.MI", "n": "2x Long Sugar", "c": "COMMODITIES"},
+    {"t": "2STR.MI", "n": "2x Short Treas", "c": "BONDS"},
+    {"t": "2TRV.MI", "n": "2x Long Treas", "c": "BONDS"},
+    {"t": "2OIG.MI", "n": "2x Long Oil Gas", "c": "COMMODITIES"},
+    {"t": "2CAR.MI", "n": "2x Long Carbon", "c": "COMMODITIES"},
+    {"t": "3EDS.MI", "n": "3x Short EuroStoxx", "c": "INDICI LEVA"},
+    {"t": "3EDF.MI", "n": "3x Long EuroStoxx", "c": "INDICI LEVA"},
+    {"t": "3SIS.MI", "n": "3x Short Silver", "c": "COMMODITIES"},
+    {"t": "3SIL.MI", "n": "3x Long Silver", "c": "COMMODITIES"},
+    {"t": "LSIL.MI", "n": "2x Long Silver", "c": "COMMODITIES"},
+    {"t": "SSIL.MI", "n": "2x Short Silver", "c": "COMMODITIES"},
+    {"t": "VIXL.MI", "n": "2x Long VIX", "c": "VOLATILITÀ"},
+    {"t": "3USS.MI", "n": "3x Short S&P 500", "c": "INDICI LEVA"},
+    {"t": "3USL.MI", "n": "3x Long S&P 500", "c": "INDICI LEVA"},
+    {"t": "LPLA.MI", "n": "2x Long Platinum", "c": "COMMODITIES"},
+    {"t": "LNIK.MI", "n": "2x Long Nickel", "c": "COMMODITIES"},
+    {"t": "SNIK.MI", "n": "2x Short Nickel", "c": "COMMODITIES"},
+    {"t": "3NGS.MI", "n": "3x Short Nat Gas", "c": "COMMODITIES"},
+    {"t": "3NGL.MI", "n": "3x Long Nat Gas", "c": "COMMODITIES"},
+    {"t": "LNGA.MI", "n": "2x Long Nat Gas", "c": "COMMODITIES"},
+    {"t": "SNGA.MI", "n": "2x Short Nat Gas", "c": "COMMODITIES"},
+    {"t": "QQQS.MI", "n": "3x Short Nasdaq", "c": "INDICI LEVA"},
+    {"t": "QQQ3.MI", "n": "3x Long Nasdaq", "c": "INDICI LEVA"},
+    {"t": "3GOS.MI", "n": "3x Short Gold", "c": "COMMODITIES"},
+    {"t": "3GOL.MI", "n": "3x Long Gold", "c": "COMMODITIES"},
+    {"t": "LBUL.MI", "n": "2x Long Gold", "c": "COMMODITIES"},
+    {"t": "SBUL.MI", "n": "2x Short Gold", "c": "COMMODITIES"},
+    {"t": "3ITL.MI", "n": "3x Long FTSE MIB", "c": "INDICI LEVA"},
+    {"t": "3BAL.MI", "n": "3x Long Banks", "c": "SETTORIALI"},
+    {"t": "3EUS.MI", "n": "3x Short EUR/USD", "c": "FOREX"},
+    {"t": "3EUL.MI", "n": "3x Long EUR/USD", "c": "FOREX"},
+    {"t": "3EMS.MI", "n": "3x Short Em. Markets", "c": "INDICI LEVA"},
+    {"t": "3EML.MI", "n": "3x Long Em. Markets", "c": "INDICI LEVA"},
+    {"t": "3DES.MI", "n": "3x Short DAX", "c": "INDICI LEVA"},
+    {"t": "3DEL.MI", "n": "3x Long DAX", "c": "INDICI LEVA"},
+    {"t": "LCOR.MI", "n": "2x Long Corn", "c": "COMMODITIES"},
+    {"t": "LCOP.MI", "n": "2x Long Copper", "c": "COMMODITIES"},
+    {"t": "LCFE.MI", "n": "2x Long Coffee", "c": "COMMODITIES"},
+    {"t": "LCOC.MI", "n": "2x Long Cocoa", "c": "COMMODITIES"},
+    {"t": "3UBS.MI", "n": "3x Short Brent", "c": "COMMODITIES"},
+    {"t": "3BUS.MI", "n": "3x Long Brent", "c": "COMMODITIES"},
+    {"t": "3BRS.MI", "n": "3x Short Brazil", "c": "INDICI LEVA"},
+    {"t": "LAGR.MI", "n": "2x Long Agriculture", "c": "COMMODITIES"},
+
+    # --- TICKER CORE (CEDOLE / CRYPTO / ETF) ---
+    {"t": "LQQ.PA", "n": "Nasdaq 2x Long", "c": "ETF LEVA"},
     {"t": "BTC-USD", "n": "Bitcoin", "c": "CRYPTO"},
     {"t": "ETH-USD", "n": "Ethereum", "c": "CRYPTO"},
-    {"t": "SOL-USD", "n": "Solana", "c": "CRYPTO"},
-    {"t": "BNB-USD", "n": "Binance Coin", "c": "CRYPTO"},
-    {"t": "XRP-USD", "n": "Ripple", "c": "CRYPTO"},
-    {"t": "ADA-USD", "n": "Cardano", "c": "CRYPTO"},
-    {"t": "DOGE-USD", "n": "Dogecoin", "c": "CRYPTO"},
-    # INDICI
-    {"t": "^GSPC", "n": "S&P 500 Index", "c": "INDICI"},
-    {"t": "^IXIC", "n": "Nasdaq 100", "c": "INDICI"},
-    {"t": "^FTSEMIB.MI", "n": "FTSE MIB", "c": "INDICI"},
-    {"t": "^GDAXI", "n": "DAX 40", "c": "INDICI"},
-    {"t": "^FCHI", "n": "CAC 40", "c": "INDICI"},
-    {"t": "^STOXX50E", "n": "Euro Stoxx 50", "c": "INDICI"}
+    {"t": "3LNV.MI", "n": "3x Long NVIDIA", "c": "GRANITESHARES"},
+    {"t": "3LTS.MI", "n": "3x Long Tesla", "c": "GRANITESHARES"}
 ]
 
 def calcola_kama(series, period=10, fast=2, slow=30):
@@ -98,16 +98,19 @@ def process_asset(asset):
         return {
             "ticker": asset['t'], "nome": asset['n'], "categoria": asset['c'],
             "price": round(last_p, 3), "kama_v": round(last_kv, 3), "kama_l": round(last_kl, 3),
-            "status": status, "signal_date": datetime.now().strftime("%d/%m/%Y")
+            "status": status, "signal_date": datetime.now().strftime("%d/%m/%Y"),
+            "history": { "prices": [float(x) for x in close.tail(15).values] }
         }
     except Exception: return None
 
-# ESECUZIONE MODULARE
+# ESECUZIONE
 results = []
+print(f"Avvio analisi su {len(TICKERS_CONFIG)} asset...")
 for a in TICKERS_CONFIG:
     res = process_asset(a)
     if res: results.append(res)
-    time.sleep(0.4) # Protezione anti-ban
+    time.sleep(0.3) # Pausa per non essere bloccati da Yahoo
 
 with open('data.json', 'w') as f:
     json.dump({"last_update": datetime.now().strftime("%d/%m/%Y %H:%M"), "data": results}, f, indent=4)
+print(f"Completato! {len(results)} asset salvati.")
