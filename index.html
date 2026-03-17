@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAPTOR KAMA DASHBOARD</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #0b0e11; --surf: #1e222d; --txt: #d1d4dc; 
+            --prim: #2962ff; --up: #00c805; --warn: #ffb100; 
+            --down: #f23645; --early: #00bcd4; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Sora', sans-serif; background: var(--bg); 
+            color: var(--txt); height: 100vh; display: flex; 
+            flex-direction: column; overflow: hidden; 
+        }
+        
+        /* TESTATA */
+        header { 
+            padding: 15px 25px; background: var(--surf); 
+            border-bottom: 1px solid #363a45; display: flex; 
+            justify-content: space-between; align-items: center; 
+        }
+        .summary { display: flex; gap: 10px; align-items: center; }
+        .badge { 
+            padding: 5px 12px; border-radius: 6px; font-size: 11px; 
+            font-weight: bold; font-family: 'JetBrains Mono'; 
+        }
+        
+        /* BOTTONI CATEGORIE */
+        .filters { 
+            padding: 10px 25px; display: flex; gap: 8px; 
+            background: #161a25; overflow-x: auto; 
+        }
+        .btn-filter { 
+            background: #2a2e39; border: none; color: white; 
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; 
+            white-space: nowrap; transition: 0.2s; font-size: 12px;
+        }
+        .btn-filter.active { background: var(--prim); }
+
+        /* LAYOUT PRINCIPALE */
+        .main { display: flex; flex: 1; overflow: hidden; }
+        
+        /* TABELLA SINISTRA */
+        .sidebar { 
+            flex: 0 0 420px; border-right: 1px solid #363a45; 
+            overflow-y: auto; background: var(--bg); 
+        }
+        table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono'; font-size: 12px; }
+        th { 
+            position: sticky; top: 0; background: #161a25; 
+            padding: 12px; text-align: left; color
