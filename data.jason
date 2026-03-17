@@ -1,96 +1,23 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAPTOR System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #0f172a; color: white; font-family: sans-serif; }
-        .card { background-color: #1e293b; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .status-buy { color: #4ade80; font-weight: bold; }
-        .status-sell { color: #f87171; font-weight: bold; }
-        tr:hover { background-color: #334155; cursor: pointer; }
-    </style>
-</head>
-<body class="p-4 md:p-8">
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-8">
-            <h1 class="text-4xl font-extrabold text-blue-500 tracking-tight">RAPTOR <span class="text-white text-2xl font-light">Dashboard</span></h1>
-            <p id="update-time" class="text-gray-400 mt-2 italic">Sincronizzazione in corso...</p>
-        </header>
-
-        <div class="card overflow-hidden">
-            <table class="w-full text-left">
-                <thead class="bg-slate-800 text-gray-300 uppercase text-xs">
-                    <tr>
-                        <th class="p-4">Strumento</th>
-                        <th class="p-4">Prezzo</th>
-                        <th class="p-4">KAMA V</th>
-                        <th class="p-4">KAMA L</th>
-                        <th class="p-4 text-center">Segnale</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body" class="divide-y divide-slate-700">
-                    </tbody>
-            </table>
-        </div>
-
-        <div id="chart-container" class="mt-8 card p-4 hidden">
-            <h2 id="chart-title" class="text-xl font-bold mb-4">Grafico</h2>
-            <div class="bg-slate-900 h-64 flex items-center justify-center text-gray-500 rounded">
-                Area Grafico (In sviluppo)
-            </div>
-        </div>
-    </div>
-
-    <script>
-        async function loadDashboard() {
-            try {
-                // Aggiungiamo un timestamp per evitare che il browser usi dati vecchi (cache)
-                const response = await fetch('data.json?t=' + Date.now());
-                if (!response.ok) throw new Error('File non trovato');
-                const result = await response.json();
-                
-                document.getElementById('update-time').innerText = "Ultimo aggiornamento: " + result.last_update;
-                
-                const tableBody = document.getElementById('table-body');
-                tableBody.innerHTML = '';
-
-                result.data.forEach(item => {
-                    const isBuy = item.price > item.kama_v;
-                    const row = document.createElement('tr');
-                    
-                    row.innerHTML = `
-                        <td class="p-4">
-                            <div class="font-bold text-blue-300">${item.ticker}</div>
-                            <div class="text-xs text-gray-500">${item.nome}</div>
-                        </td>
-                        <td class="p-4 font-mono">${item.price.toFixed(2)}</td>
-                        <td class="p-4 text-gray-400 font-mono">${item.kama_v.toFixed(2)}</td>
-                        <td class="p-4 text-gray-400 font-mono">${item.kama_l.toFixed(2)}</td>
-                        <td class="p-4 text-center">
-                            <span class="${isBuy ? 'status-buy' : 'status-sell'}">
-                                ${isBuy ? '▲ BUY' : '▼ SELL'}
-                            </span>
-                        </td>
-                    `;
-                    
-                    row.onclick = () => showChart(item.ticker);
-                    tableBody.appendChild(row);
-                });
-            } catch (error) {
-                document.getElementById('update-time').innerText = "Errore nel caricamento del file data.json";
-                console.error(error);
-            }
-        }
-
-        function showChart(ticker) {
-            document.getElementById('chart-container').classList.remove('hidden');
-            document.getElementById('chart-title').innerText = "Analisi Rapida: " + ticker;
-        }
-
-        loadDashboard();
-    </script>
-</body>
-</html>
+{
+  "last_update": "17/03/2026 10:30",
+  "data": [
+    {
+      "ticker": "LQQ",
+      "nome": "Nasdaq 2x",
+      "cat": "Indici Azionari",
+      "price": 956.50,
+      "kama_v": 950.20,
+      "kama_l": 935.10,
+      "history": []
+    },
+    {
+      "ticker": "BTC",
+      "nome": "Bitcoin",
+      "cat": "Crypto",
+      "price": 68500.00,
+      "kama_v": 67800.00,
+      "kama_l": 65000.00,
+      "history": []
+    }
+  ]
+}
