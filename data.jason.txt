@@ -1,0 +1,39 @@
+{
+  "last_update": "17/03/2026 10:30",
+  "data": [
+    {
+      "ticker": "LQQ",
+      "nome": "Nasdaq 2x",
+      "cat": "Indici Azionari",
+      "price": 956.50,
+      "kama_v": 950.20,
+      "kama_l": 935.10,
+      "history": [
+        {"time": 1710633600, "open": 940.0, "high": 960.5, "low": 938.0, "close": 956.5, "kv": 950.2, "kl": 935.1},
+        {"time": 1710547200, "open": 935.0, "high": 945.0, "low": 930.0, "close": 940.0, "kv": 948.0, "kl": 934.0}
+      ]
+    },
+    {
+      "ticker": "BTC",
+      "nome": "Bitcoin",
+      "cat": "Crypto",
+      "price": 68500.00,
+      "kama_v": 67800.00,
+      "kama_l": 65000.00,
+      "history": [
+        {"time": 1710633600, "open": 67000, "high": 69000, "low": 66500, "close": 68500, "kv": 67800, "kl": 65000}
+      ]
+    },
+    {
+      "ticker": "GDX",
+      "nome": "Gold Miners",
+      "cat": "Commodities",
+      "price": 31.20,
+      "kama_v": 30.50,
+      "kama_l": 29.80,
+      "history": [
+        {"time": 1710633600, "open": 30.1, "high": 31.5, "low": 30.0, "close": 31.2, "kv": 30.5, "kl": 29.8}
+      ]
+    }
+  ]
+}
