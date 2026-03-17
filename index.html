@@ -2,56 +2,158 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>RAPTOR System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAPTOR ONE - DASHBOARD</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #f8fafc; color: #1e293b; }
+        .card { background: white; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .buy-row { border-left: 4px solid #10b981; }
+        .sell-row { border-left: 4px solid #ef4444; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    </style>
 </head>
-<body class="bg-slate-900 text-white p-6">
-    <div class="max-w-3xl mx-auto">
-        <h1 class="text-3xl font-bold text-blue-500 mb-2">RAPTOR SYSTEM</h1>
-        <p id="info" class="text-gray-400 mb-6 italic text-sm">Sincronizzazione...</p>
-        <div class="bg-slate-800 rounded-xl shadow-2xl overflow-hidden">
-            <table class="w-full text-left text-sm md:text-base">
-                <thead class="bg-slate-700 text-gray-300">
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter text-blue-600">RAPTOR <span class="text-slate-400">ONE</span></h1>
+                <p id="lastUpdate" class="text-xs text-slate-400 font-mono italic uppercase"></p>
+            </div>
+            <input type="text" id="search" placeholder="Cerca ticker o nome..." 
+                   class="w-full md:w-80 p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-sm">
+        </header>
+
+        <div id="filterBar" class="flex flex-wrap gap-2 mb-8">
+            <button onclick="filterCat('TUTTI')" class="px-4 py-2 rounded-full text-xs font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">TUTTI</button>
+        </div>
+
+        <div class="card rounded-2xl shadow-sm overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-500 tracking-wider">
                     <tr>
-                        <th class="p-4">Ticker</th>
+                        <th class="p-4 w-16 text-center">Trend</th>
+                        <th class="p-4">Strumento</th>
                         <th class="p-4">Prezzo</th>
-                        <th class="p-4">KAMA V</th>
-                        <th class="p-4 text-center">Stato</th>
+                        <th class="p-4">KAMA V (10,5,20)</th>
+                        <th class="p-4">KAMA L (10,2,30)</th>
                     </tr>
                 </thead>
-                <tbody id="table-body"></tbody>
+                <tbody id="tableBody" class="divide-y divide-slate-100">
+                    </tbody>
             </table>
         </div>
     </div>
+
     <script>
-        async function load() {
+        let fullData = [];
+        let activeFilter = 'TUTTI';
+
+        async function loadData() {
             try {
-                // Forziamo il caricamento del file fresco
-                const r = await fetch('data.json?t=' + Date.now());
-                const d = await r.json();
+                const response = await fetch('data.json?v=' + Date.now());
+                const json = await response.json();
+                fullData = json.data;
+                document.getElementById('lastUpdate').innerText = "Ultimo aggiornamento: " + json.last_update;
                 
-                document.getElementById('info').innerText = "Ultimo aggiornamento: " + d.last_update;
-                const body = document.getElementById('table-body');
-                body.innerHTML = '';
+                setupFilters();
+                renderTable();
+            } catch (e) { console.error("Errore caricamento dati", e); }
+        }
+
+        function setupFilters() {
+            const cats = ['TUTTI', ...new Set(fullData.map(item => item.categoria))];
+            const bar = document.getElementById('filterBar');
+            bar.innerHTML = '';
+            cats.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2 rounded-full text-[10px] font-bold border transition ${activeFilter === c ? 'bg-blue-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`;
+                btn.innerText = c.toUpperCase();
+                btn.onclick = () => { activeFilter = c; renderTable(); setupFilters(); };
+                bar.appendChild(btn);
+            });
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            tbody.innerHTML = '';
+
+            const filtered = fullData.filter(d => {
+                const matchesSearch = d.ticker.toLowerCase().includes(searchTerm) || d.nome.toLowerCase().includes(searchTerm);
+                const matchesCat = activeFilter === 'TUTTI' || d.categoria === activeFilter;
+                return matchesSearch && matchesCat;
+            });
+
+            filtered.forEach((item, index) => {
+                const isBuy = item.price >= item.kama_v;
+                const isExit = item.price < item.kama_l;
+                const statusColor = isExit ? 'bg-red-500' : (isBuy ? 'bg-green-500' : 'bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]');
                 
-                d.data.forEach(item => {
-                    const isBuy = item.price > item.kama_v;
-                    body.innerHTML += `
-                        <tr class="border-b border-slate-700 hover:bg-slate-750 transition">
-                            <td class="p-4 font-bold text-blue-300">${item.ticker}</td>
-                            <td class="p-4 font-mono font-medium">${item.price.toFixed(2)}</td>
-                            <td class="p-4 text-gray-400 font-mono">${item.kama_v.toFixed(2)}</td>
-                            <td class="p-4 text-center font-bold ${isBuy ? 'text-green-400' : 'text-red-400'}">
-                                ${isBuy ? '▲ BUY' : '▼ SELL'}
-                            </td>
-                        </tr>`;
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 cursor-pointer transition";
+                tr.onclick = () => toggleChart(index);
+                tr.innerHTML = `
+                    <td class="p-4 text-center"><span class="status-dot ${statusColor}"></span></td>
+                    <td class="p-4">
+                        <div class="font-bold text-blue-800 text-sm">${item.ticker}</div>
+                        <div class="text-[10px] text-slate-400 uppercase">${item.nome}</div>
+                    </td>
+                    <td class="p-4 font-mono font-bold text-sm">${item.price.toFixed(3)}</td>
+                    <td class="p-4 font-mono text-xs text-slate-500">${item.kama_v.toFixed(3)}</td>
+                    <td class="p-4 font-mono text-xs text-slate-500">${item.kama_l.toFixed(3)}</td>
+                `;
+                
+                const chartTr = document.createElement('tr');
+                chartTr.id = `chartRow-${index}`;
+                chartTr.className = "hidden bg-white";
+                chartTr.innerHTML = `
+                    <td colspan="5" class="p-4 border-t border-b border-slate-50">
+                        <div class="h-64 w-full"><canvas id="chart-${index}"></canvas></div>
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+                tbody.appendChild(chartTr);
+            });
+        }
+
+        function toggleChart(index) {
+            const row = document.getElementById(`chartRow-${index}`);
+            const isHidden = row.classList.contains('hidden');
+            
+            // Chiudi tutti gli altri
+            document.querySelectorAll('[id^="chartRow-"]').forEach(r => r.classList.add('hidden'));
+            
+            if (isHidden) {
+                row.classList.remove('hidden');
+                const ctx = document.getElementById(`chart-${index}`).getContext('2d');
+                const d = fullData[index].history;
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: d.dates,
+                        datasets: [
+                            { label: 'Prezzo', data: d.prices, borderColor: '#1e293b', borderWidth: 2, pointRadius: 0, fill: false },
+                            { label: 'KAMA V', data: d.kv, borderColor: '#10b981', borderWidth: 1.5, pointRadius: 0, fill: false },
+                            { label: 'KAMA L', data: d.kl, borderColor: '#ef4444', borderWidth: 1.5, pointRadius: 0, fill: 1, backgroundColor: 'rgba(16, 185, 129, 0.1)' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { x: { display: true, ticks: { size: 9 } }, y: { position: 'right' } }
+                    }
                 });
-            } catch (e) {
-                document.getElementById('info').innerText = "Errore: dati in fase di aggiornamento...";
-                console.error(e);
             }
         }
-        load();
+
+        document.getElementById('search').oninput = renderTable;
+        window.onload = loadData;
     </script>
 </body>
 </html>
