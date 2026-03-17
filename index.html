@@ -2,73 +2,56 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAPTOR Dashboard</title>
+    <title>RAPTOR System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #0f172a; color: white; }
-        .card { background-color: #1e293b; border-radius: 8px; padding: 20px; }
-    </style>
 </head>
-<body class="p-5">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold mb-2 text-blue-400">RAPTOR SYSTEM</h1>
-        <p id="update-time" class="text-gray-400 mb-6 italic">Caricamento dati...</p>
-
-        <div class="overflow-x-auto card">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="border-b border-gray-700 text-gray-400">
-                        <th class="p-3">Ticker</th>
-                        <th class="p-3">Prezzo</th>
-                        <th class="p-3">KAMA V</th>
-                        <th class="p-3">KAMA L</th>
-                        <th class="p-3">Stato</th>
+<body class="bg-slate-900 text-white p-6">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-3xl font-bold text-blue-500 mb-2">RAPTOR SYSTEM</h1>
+        <p id="info" class="text-gray-400 mb-6 italic text-sm">Sincronizzazione...</p>
+        <div class="bg-slate-800 rounded-xl shadow-2xl overflow-hidden">
+            <table class="w-full text-left text-sm md:text-base">
+                <thead class="bg-slate-700 text-gray-300">
+                    <tr>
+                        <th class="p-4">Ticker</th>
+                        <th class="p-4">Prezzo</th>
+                        <th class="p-4">KAMA V</th>
+                        <th class="p-4 text-center">Stato</th>
                     </tr>
                 </thead>
-                <tbody id="table-body">
-                    </tbody>
+                <tbody id="table-body"></tbody>
             </table>
         </div>
     </div>
-
     <script>
-        async function loadData() {
+        async function load() {
             try {
-                // Legge il file data.json nella stessa cartella
-                const response = await fetch('data.json');
-                const result = await response.json();
+                // Forziamo il caricamento del file fresco
+                const r = await fetch('data.json?t=' + Date.now());
+                const d = await r.json();
                 
-                document.getElementById('update-time').innerText = "Ultimo aggiornamento: " + result.last_update;
+                document.getElementById('info').innerText = "Ultimo aggiornamento: " + d.last_update;
+                const body = document.getElementById('table-body');
+                body.innerHTML = '';
                 
-                const tableBody = document.getElementById('table-body');
-                tableBody.innerHTML = '';
-
-                result.data.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.className = "border-b border-gray-800 hover:bg-gray-800 transition";
-                    
-                    // Logica colore stato
-                    const color = item.price > item.kama_v ? 'text-green-400' : 'text-red-400';
-                    const status = item.price > item.kama_v ? 'BUY' : 'SELL';
-
-                    row.innerHTML = `
-                        <td class="p-3 font-bold">${item.ticker}</td>
-                        <td class="p-3">${item.price.toFixed(2)}</td>
-                        <td class="p-3 text-gray-400">${item.kama_v.toFixed(2)}</td>
-                        <td class="p-3 text-gray-400">${item.kama_l.toFixed(2)}</td>
-                        <td class="p-3 font-bold ${color}">${status}</td>
-                    `;
-                    tableBody.appendChild(row);
+                d.data.forEach(item => {
+                    const isBuy = item.price > item.kama_v;
+                    body.innerHTML += `
+                        <tr class="border-b border-slate-700 hover:bg-slate-750 transition">
+                            <td class="p-4 font-bold text-blue-300">${item.ticker}</td>
+                            <td class="p-4 font-mono font-medium">${item.price.toFixed(2)}</td>
+                            <td class="p-4 text-gray-400 font-mono">${item.kama_v.toFixed(2)}</td>
+                            <td class="p-4 text-center font-bold ${isBuy ? 'text-green-400' : 'text-red-400'}">
+                                ${isBuy ? '▲ BUY' : '▼ SELL'}
+                            </td>
+                        </tr>`;
                 });
-            } catch (error) {
-                console.error("Errore caricamento dati:", error);
-                document.getElementById('update-time').innerText = "Errore: File data.json non trovato o non valido.";
+            } catch (e) {
+                document.getElementById('info').innerText = "Errore: dati in fase di aggiornamento...";
+                console.error(e);
             }
         }
-
-        loadData();
+        load();
     </script>
 </body>
 </html>
- 
