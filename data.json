@@ -1,5 +1,5 @@
 {
-  "last_update": "17/03/2026 15:57:59",
+  "last_update": "17/03/2026 17:03:25",
   "data": [
     {
       "ticker": "LQQ",
@@ -185,7 +185,7 @@
       "ticker": "CL2",
       "nome": "Amundi MSCI USA 2x",
       "categoria": "indici azionari",
-      "price": 24.505,
+      "price": 24.51,
       "kama_v": 24.766,
       "kama_l": 24.742,
       "status": "SELL",
@@ -273,7 +273,7 @@
           24.4,
           24.395,
           24.455,
-          24.505
+          24.51
         ],
         "kv": [
           25.005,
