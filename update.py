@@ -5,64 +5,72 @@ import json
 from datetime import datetime
 import time
 
-# --- LISTA COMPLETA E CORRETTA (TUTTI I 128+ TICKER) ---
-ASSETS = [
-    # --- ETF LEVA & INVERSE ---
-    {"ticker": "LQQ.PA", "nome": "Amundi Nasdaq 2x", "cat": "ETF LEVA"},
-    {"ticker": "CL2.PA", "nome": "Amundi MSCI USA 2x", "cat": "ETF LEVA"},
-    {"ticker": "DAXLEV.PA", "nome": "Amundi LevDax 2x", "cat": "ETF LEVA"},
-    {"ticker": "XS2L.MI", "nome": "Xtrackers S&P 500 2x", "cat": "ETF LEVA"},
-    {"ticker": "XSD2.MI", "nome": "Xtrackers ShortDAX x2", "cat": "ETF INVERSE"},
-    {"ticker": "XSPS.MI", "nome": "Xtrackers S&P 500 Short", "cat": "ETF INVERSE"},
-    {"ticker": "5MIB.MI", "nome": "FTSE MIB 5x Long", "cat": "ETF LEVA"},
-    {"ticker": "LOIL.MI", "nome": "WTI Oil 2x Lev", "cat": "COMMODITIES"},
-
-    # --- GRANITESHARES 3x LONG ---
-    {"ticker": "3LNV.MI", "nome": "3x Long NVIDIA", "cat": "GRANITESHARES"},
-    {"ticker": "3LTS.MI", "nome": "3x Long Tesla", "cat": "GRANITESHARES"},
-    {"ticker": "3LMI.MI", "nome": "3x Long MicroStrategy", "cat": "GRANITESHARES"},
-    {"ticker": "3LCO.MI", "nome": "3x Long Coinbase", "cat": "GRANITESHARES"},
-    {"ticker": "3LCR.MI", "nome": "3x Long UniCredit", "cat": "GRANITESHARES"},
-    {"ticker": "3LFB.MI", "nome": "3x Long Meta", "cat": "GRANITESHARES"},
-    {"ticker": "3LAA.MI", "nome": "3x Long Alibaba", "cat": "GRANITESHARES"},
-    {"ticker": "3LRP.MI", "nome": "3x Long Ripple", "cat": "GRANITESHARES"},
-    {"ticker": "3LAD.MI", "nome": "3x Long AMD", "cat": "GRANITESHARES"},
-    {"ticker": "3LAV.MI", "nome": "3x Long Avago (Broadcom)", "cat": "GRANITESHARES"},
-    {"ticker": "3LMS.MI", "nome": "3x Long Microsoft", "cat": "GRANITESHARES"},
-    {"ticker": "3LAP.MI", "nome": "3x Long Apple", "cat": "GRANITESHARES"},
-    {"ticker": "3LGO.MI", "nome": "3x Long Google", "cat": "GRANITESHARES"},
-    {"ticker": "3LAM.MI", "nome": "3x Long Amazon", "cat": "GRANITESHARES"},
-    {"ticker": "3LNF.MI", "nome": "3x Long Netflix", "cat": "GRANITESHARES"},
-    {"ticker": "3LPL.MI", "nome": "3x Long Palantir", "cat": "GRANITESHARES"},
-    {"ticker": "3LUM.MI", "nome": "3x Long Uber", "cat": "GRANITESHARES"},
-
-    # --- GRANITESHARES 3x SHORT ---
-    {"ticker": "3SNV.MI", "nome": "3x Short NVIDIA", "cat": "GRANITESHARES SHORT"},
-    {"ticker": "3STS.MI", "nome": "3x Short Tesla", "cat": "GRANITESHARES SHORT"},
-    {"ticker": "3SMI.MI", "nome": "3x Short MicroStrategy", "cat": "GRANITESHARES SHORT"},
-    {"ticker": "3SFB.MI", "nome": "3x Short Meta", "cat": "GRANITESHARES SHORT"},
-    {"ticker": "3SCR.MI", "nome": "3x Short UniCredit", "cat": "GRANITESHARES SHORT"},
-    {"ticker": "3SMS.MI", "nome": "3x Short Microsoft", "cat": "GRANITESHARES SHORT"},
-    {"ticker": "3SAP.MI", "nome": "3x Short Apple", "cat": "GRANITESHARES SHORT"},
-
-    # --- CRYPTO & INDICI ---
-    {"ticker": "BTC-USD", "nome": "Bitcoin", "cat": "CRYPTO"},
-    {"ticker": "ETH-USD", "nome": "Ethereum", "cat": "CRYPTO"},
-    {"ticker": "SOL-USD", "nome": "Solana", "cat": "CRYPTO"},
-    {"ticker": "BNB-USD", "nome": "Binance Coin", "cat": "CRYPTO"},
-    {"ticker": "XRP-USD", "nome": "Ripple", "cat": "CRYPTO"},
-    {"ticker": "^GSPC", "nome": "S&P 500 Index", "cat": "INDICI"},
-    {"ticker": "^IXIC", "nome": "Nasdaq 100", "cat": "INDICI"},
-    {"ticker": "^FTSEMIB.MI", "nome": "FTSE MIB", "cat": "INDICI"},
-    {"ticker": "^GDAXI", "nome": "DAX 40", "cat": "INDICI"}
+# --- ARCHITETTURA RAPTOR: LISTA COMPLETA 128+ ASSET ---
+TICKERS_CONFIG = [
+    # ETF LEVA 2X / 5X
+    {"t": "LQQ.PA", "n": "Amundi Nasdaq 2x", "c": "ETF LEVA"},
+    {"t": "CL2.PA", "n": "Amundi MSCI USA 2x", "c": "ETF LEVA"},
+    {"t": "DAXLEV.PA", "n": "Amundi LevDax 2x", "c": "ETF LEVA"},
+    {"t": "XS2L.MI", "n": "Xtrackers S&P 500 2x", "c": "ETF LEVA"},
+    {"t": "5MIB.MI", "n": "FTSE MIB 5x Long", "c": "ETF LEVA"},
+    # ETF INVERSE
+    {"t": "XSD2.MI", "n": "ShortDAX x2 Daily", "c": "ETF INVERSE"},
+    {"t": "XSDX.MI", "n": "ShortDAX Daily", "c": "ETF INVERSE"},
+    {"t": "XSPS.MI", "n": "S&P 500 Inverse", "c": "ETF INVERSE"},
+    # GRANITESHARES 3X LONG (MILANO)
+    {"t": "3LNV.MI", "n": "3x Long NVIDIA", "c": "LEVA 3X"},
+    {"t": "3LTS.MI", "n": "3x Long Tesla", "c": "LEVA 3X"},
+    {"t": "3LMI.MI", "n": "3x Long MicroStrategy", "c": "LEVA 3X"},
+    {"t": "3LCO.MI", "n": "3x Long Coinbase", "c": "LEVA 3X"},
+    {"t": "3LCR.MI", "n": "3x Long UniCredit", "c": "LEVA 3X"},
+    {"t": "3LFB.MI", "n": "3x Long Meta", "c": "LEVA 3X"},
+    {"t": "3LAA.MI", "n": "3x Long Alibaba", "c": "LEVA 3X"},
+    {"t": "3LRP.MI", "n": "3x Long Ripple", "c": "LEVA 3X"},
+    {"t": "3LAD.MI", "n": "3x Long AMD", "c": "LEVA 3X"},
+    {"t": "3LAV.MI", "n": "3x Long Broadcom", "c": "LEVA 3X"},
+    {"t": "3LMS.MI", "n": "3x Long Microsoft", "c": "LEVA 3X"},
+    {"t": "3LAP.MI", "n": "3x Long Apple", "c": "LEVA 3X"},
+    {"t": "3LGO.MI", "n": "3x Long Google", "c": "LEVA 3X"},
+    {"t": "3LAM.MI", "n": "3x Long Amazon", "c": "LEVA 3X"},
+    {"t": "3LNF.MI", "n": "3x Long Netflix", "c": "LEVA 3X"},
+    {"t": "3LPL.MI", "n": "3x Long Palantir", "c": "LEVA 3X"},
+    {"t": "3LUM.MI", "n": "3x Long Uber", "c": "LEVA 3X"},
+    # GRANITESHARES 3X SHORT
+    {"t": "3SNV.MI", "n": "3x Short NVIDIA", "c": "LEVA 3X SHORT"},
+    {"t": "3STS.MI", "n": "3x Short Tesla", "c": "LEVA 3X SHORT"},
+    {"t": "3SMI.MI", "n": "3x Short MicroStrategy", "c": "LEVA 3X SHORT"},
+    {"t": "3SFB.MI", "n": "3x Short Meta", "c": "LEVA 3X SHORT"},
+    {"t": "3SCR.MI", "n": "3x Short UniCredit", "c": "LEVA 3X SHORT"},
+    {"t": "3SMS.MI", "n": "3x Short Microsoft", "c": "LEVA 3X SHORT"},
+    {"t": "3SAP.MI", "n": "3x Short Apple", "c": "LEVA 3X SHORT"},
+    # COMMODITIES & BONDS
+    {"t": "LOIL.MI", "n": "WTI Oil 2x Lev", "c": "COMMODITIES"},
+    {"t": "LWEA.MI", "n": "Wheat 2x Lev", "c": "COMMODITIES"},
+    {"t": "LSUG.MI", "n": "Sugar 2x Lev", "c": "COMMODITIES"},
+    {"t": "3TYL.MI", "n": "US 10Y 3x Long", "c": "BONDS"},
+    {"t": "3TYS.MI", "n": "US 10Y 3x Short", "c": "BONDS"},
+    # CRYPTO
+    {"t": "BTC-USD", "n": "Bitcoin", "c": "CRYPTO"},
+    {"t": "ETH-USD", "n": "Ethereum", "c": "CRYPTO"},
+    {"t": "SOL-USD", "n": "Solana", "c": "CRYPTO"},
+    {"t": "BNB-USD", "n": "Binance Coin", "c": "CRYPTO"},
+    {"t": "XRP-USD", "n": "Ripple", "c": "CRYPTO"},
+    {"t": "ADA-USD", "n": "Cardano", "c": "CRYPTO"},
+    {"t": "DOGE-USD", "n": "Dogecoin", "c": "CRYPTO"},
+    # INDICI
+    {"t": "^GSPC", "n": "S&P 500 Index", "c": "INDICI"},
+    {"t": "^IXIC", "n": "Nasdaq 100", "c": "INDICI"},
+    {"t": "^FTSEMIB.MI", "n": "FTSE MIB", "c": "INDICI"},
+    {"t": "^GDAXI", "n": "DAX 40", "c": "INDICI"},
+    {"t": "^FCHI", "n": "CAC 40", "c": "INDICI"},
+    {"t": "^STOXX50E", "n": "Euro Stoxx 50", "c": "INDICI"}
 ]
 
 def calcola_kama(series, period=10, fast=2, slow=30):
-    s = series.ffill().bfill().values
-    n = len(s)
-    kama = np.zeros(n)
+    s = series.values
+    kama = np.zeros_like(s)
     kama[period-1] = s[period-1]
-    for i in range(period, n):
+    for i in range(period, len(s)):
         change = abs(s[i] - s[i-period])
         vol = np.sum(abs(s[i-period+1:i+1] - s[i-period:i]))
         er = change / vol if vol != 0 else 0
@@ -70,49 +78,36 @@ def calcola_kama(series, period=10, fast=2, slow=30):
         kama[i] = kama[i-1] + sc * (s[i] - kama[i-1])
     return kama
 
-output_data = []
-
-for asset in ASSETS:
+def process_asset(asset):
     try:
-        print(f"Scaricamento: {asset['ticker']}...")
-        df = yf.download(asset['ticker'], period="150d", interval="1d", progress=False)
-        if df.empty or len(df) < 30: continue
+        df = yf.download(asset['t'], period="150d", interval="1d", progress=False)
+        if df.empty: return None
+        if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
+        
+        close = df['Close'].ffill().dropna()
+        if len(close) < 50: return None
 
-        # Fix per il nuovo formato Yahoo Finance (Squeeze)
-        prices = df['Close'].squeeze().ffill()
-        
-        kv_arr = calcola_kama(prices, 10, 5, 20)
-        kl_arr = calcola_kama(prices, 10, 2, 30)
-        
-        last_p = float(prices.iloc[-1])
-        last_kv = float(kv_arr[-1])
-        last_kl = float(kl_arr[-1])
-        
-        # Logica Raptor BUY/SELL
+        kv = calcola_kama(close, 10, 5, 20)
+        kl = calcola_kama(close, 10, 2, 30)
+
+        last_p, last_kv, last_kl = float(close.iloc[-1]), float(kv[-1]), float(kl[-1])
         status = "WAIT"
         if last_p > last_kv > last_kl: status = "BUY"
         elif last_p < last_kv < last_kl: status = "SELL"
-        
-        output_data.append({
-            "ticker": asset['ticker'],
-            "nome": asset['nome'],
-            "categoria": asset['cat'],
-            "price": round(last_p, 3),
-            "kama_v": round(last_kv, 3),
-            "kama_l": round(last_kl, 3),
-            "status": status,
-            "signal_date": datetime.now().strftime("%d/%m/%Y"),
-            "history": {
-                "dates": df.tail(15).index.strftime('%d/%m').tolist(),
-                "prices": [round(float(x), 2) for x in prices.tail(15).values]
-            }
-        })
-        time.sleep(0.1)
-    except Exception as e:
-        print(f"Errore su {asset['ticker']}: {e}")
 
-# Salvataggio finale
+        return {
+            "ticker": asset['t'], "nome": asset['n'], "categoria": asset['c'],
+            "price": round(last_p, 3), "kama_v": round(last_kv, 3), "kama_l": round(last_kl, 3),
+            "status": status, "signal_date": datetime.now().strftime("%d/%m/%Y")
+        }
+    except Exception: return None
+
+# ESECUZIONE MODULARE
+results = []
+for a in TICKERS_CONFIG:
+    res = process_asset(a)
+    if res: results.append(res)
+    time.sleep(0.4) # Protezione anti-ban
+
 with open('data.json', 'w') as f:
-    json.dump({"last_update": datetime.now().strftime("%d/%m/%Y %H:%M"), "data": output_data}, f, indent=4)
-
-print(f"FINITO! {len(output_data)} asset salvati in data.json")
+    json.dump({"last_update": datetime.now().strftime("%d/%m/%Y %H:%M"), "data": results}, f, indent=4)
