@@ -1,21 +1,33 @@
-name: Aggiorna Prezzi
+name: Update Raptor Data
+
 on:
   schedule:
-    - cron: '0 * * * *'
-  workflow_dispatch:
+    - cron: '0 * * * *' # Gira ogni ora
+  workflow_dispatch: # Ti permette di farlo partire a mano
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout del codice
+        uses: actions/checkout@v4
+
+      - name: Configura Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
-      - run: pip install yfinance
-      - run: python update.py
-      - run: |
-          git config --global user.name "Robot"
-          git config --global user.email "bot@github.com"
+          python-version: '3.10'
+
+      - name: Installazione Librerie
+        run: |
+          pip install yfinance pandas numpy
+
+      - name: Esecuzione Script Update
+        run: python update.py
+
+      - name: Salva i cambiamenti (Push)
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
           git add data.json
-          git commit -m "Update" || exit 0
+          git commit -m "Aggiornamento dati automatico" || exit 0
           git push
