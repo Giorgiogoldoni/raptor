@@ -1,33 +1,27 @@
-name: Update Raptor Data
+name: Update Raptor
 
 on:
   schedule:
-    - cron: '0 * * * *' # Gira ogni ora
-  workflow_dispatch: # Ti permette di farlo partire a mano
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del codice
-        uses: actions/checkout@v4
-
-      - name: Configura Python
+      - uses: actions/checkout@v4
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Installazione Librerie
-        run: |
-          pip install yfinance pandas numpy
-
-      - name: Esecuzione Script Update
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+      - name: Run update
         run: python update.py
-
-      - name: Salva i cambiamenti (Push)
+      - name: Commit and Push
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add data.json
-          git commit -m "Aggiornamento dati automatico" || exit 0
+          git commit -m "Auto update" || exit 0
           git push
