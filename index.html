@@ -3,55 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAPTOR KAMA DASHBOARD</title>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>RAPTOR Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { 
-            --bg: #0b0e11; --surf: #1e222d; --txt: #d1d4dc; 
-            --prim: #2962ff; --up: #00c805; --warn: #ffb100; 
-            --down: #f23645; --early: #00bcd4; 
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Sora', sans-serif; background: var(--bg); 
-            color: var(--txt); height: 100vh; display: flex; 
-            flex-direction: column; overflow: hidden; 
-        }
-        
-        /* TESTATA */
-        header { 
-            padding: 15px 25px; background: var(--surf); 
-            border-bottom: 1px solid #363a45; display: flex; 
-            justify-content: space-between; align-items: center; 
-        }
-        .summary { display: flex; gap: 10px; align-items: center; }
-        .badge { 
-            padding: 5px 12px; border-radius: 6px; font-size: 11px; 
-            font-weight: bold; font-family: 'JetBrains Mono'; 
-        }
-        
-        /* BOTTONI CATEGORIE */
-        .filters { 
-            padding: 10px 25px; display: flex; gap: 8px; 
-            background: #161a25; overflow-x: auto; 
-        }
-        .btn-filter { 
-            background: #2a2e39; border: none; color: white; 
-            padding: 8px 16px; border-radius: 4px; cursor: pointer; 
-            white-space: nowrap; transition: 0.2s; font-size: 12px;
-        }
-        .btn-filter.active { background: var(--prim); }
+        body { background-color: #0f172a; color: white; }
+        .card { background-color: #1e293b; border-radius: 8px; padding: 20px; }
+    </style>
+</head>
+<body class="p-5">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-2 text-blue-400">RAPTOR SYSTEM</h1>
+        <p id="update-time" class="text-gray-400 mb-6 italic">Caricamento dati...</p>
 
-        /* LAYOUT PRINCIPALE */
-        .main { display: flex; flex: 1; overflow: hidden; }
-        
-        /* TABELLA SINISTRA */
-        .sidebar { 
-            flex: 0 0 420px; border-right: 1px solid #363a45; 
-            overflow-y: auto; background: var(--bg); 
+        <div class="overflow-x-auto card">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-700 text-gray-400">
+                        <th class="p-3">Ticker</th>
+                        <th class="p-3">Prezzo</th>
+                        <th class="p-3">KAMA V</th>
+                        <th class="p-3">KAMA L</th>
+                        <th class="p-3">Stato</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadData() {
+            try {
+                // Legge il file data.json nella stessa cartella
+                const response = await fetch('data.json');
+                const result = await response.json();
+                
+                document.getElementById('update-time').innerText = "Ultimo aggiornamento: " + result.last_update;
+                
+                const tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                result.data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.className = "border-b border-gray-800 hover:bg-gray-800 transition";
+                    
+                    // Logica colore stato
+                    const color = item.price > item.kama_v ? 'text-green-400' : 'text-red-400';
+                    const status = item.price > item.kama_v ? 'BUY' : 'SELL';
+
+                    row.innerHTML = `
+                        <td class="p-3 font-bold">${item.ticker}</td>
+                        <td class="p-3">${item.price.toFixed(2)}</td>
+                        <td class="p-3 text-gray-400">${item.kama_v.toFixed(2)}</td>
+                        <td class="p-3 text-gray-400">${item.kama_l.toFixed(2)}</td>
+                        <td class="p-3 font-bold ${color}">${status}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Errore caricamento dati:", error);
+                document.getElementById('update-time').innerText = "Errore: File data.json non trovato o non valido.";
+            }
         }
-        table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono'; font-size: 12px; }
-        th { 
-            position: sticky; top: 0; background: #161a25; 
-            padding: 12px; text-align: left; color
+
+        loadData();
+    </script>
+</body>
+</html>
