@@ -1,8 +1,1 @@
-{
-  "last_update": "17/03/2026 10:30",
-  "data": [
-    { "ticker": "LQQ", "nome": "Nasdaq 2x", "price": 956.50, "kama_v": 950.20, "kama_l": 935.10 },
-    { "ticker": "BTC", "nome": "Bitcoin", "price": 68500.00, "kama_v": 67800.00, "kama_l": 65000.00 },
-    { "ticker": "GDX", "nome": "Gold Miners", "price": 31.20, "kama_v": 30.50, "kama_l": 29.80 }
-  ]
-}
+{"last_update": "17/03 09:02", "data": [{"ticker": "LQQ", "price": 1390.800048828125, "kama_v": 1411.4400024414062}, {"ticker": "BTC", "price": 74185.1171875, "kama_v": 70901.64375}, {"ticker": "GDX", "price": 94.37999725341797, "kama_v": 100.84300003051757}]}
