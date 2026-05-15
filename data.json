@@ -1,5 +1,5 @@
 {
-    "last_update": "15/05/2026 15:58",
+    "last_update": "15/05/2026 17:27",
     "data": [
         {
             "ticker": "3OIS.MI",
@@ -2965,9 +2965,9 @@
             "ticker": "3TYS.MI",
             "nome": "3x Short US 10Y",
             "categoria": "BONDS",
-            "price": 96.07,
-            "kama_v": 91.478,
-            "kama_l": 92.485,
+            "price": 95.99,
+            "kama_v": 91.471,
+            "kama_l": 92.461,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -3151,7 +3151,7 @@
                     91.41,
                     91.41,
                     93.27,
-                    96.07
+                    95.99
                 ],
                 "kv": [
                     87.89,
@@ -3333,7 +3333,7 @@
                     91.11,
                     91.12,
                     91.19,
-                    91.48
+                    91.47
                 ],
                 "kl": [
                     87.45,
@@ -3515,7 +3515,7 @@
                     91.49,
                     91.49,
                     91.65,
-                    92.48
+                    92.46
                 ],
                 "dates": [
                     "26/08",
@@ -3705,9 +3705,9 @@
             "ticker": "3TYL.MI",
             "nome": "3x Long US 10Y",
             "categoria": "BONDS",
-            "price": 62.65,
-            "kama_v": 65.091,
-            "kama_l": 63.821,
+            "price": 62.28,
+            "kama_v": 65.067,
+            "kama_l": 63.769,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -3891,7 +3891,7 @@
                     63.12,
                     62.79,
                     63.55,
-                    62.65
+                    62.28
                 ],
                 "kv": [
                     66.0,
@@ -4073,7 +4073,7 @@
                     65.33,
                     65.2,
                     65.16,
-                    65.09
+                    65.07
                 ],
                 "kl": [
                     65.93,
@@ -4255,7 +4255,7 @@
                     64.12,
                     63.92,
                     63.9,
-                    63.82
+                    63.77
                 ],
                 "dates": [
                     "26/08",
@@ -4445,7 +4445,7 @@
             "ticker": "LSUG.MI",
             "nome": "2x Long Sugar",
             "categoria": "COMMODITIES",
-            "price": 1.822,
+            "price": 1.815,
             "kama_v": 1.783,
             "kama_l": 1.843,
             "status": "WAIT",
@@ -4631,7 +4631,7 @@
                     1.84,
                     1.97,
                     1.89,
-                    1.82
+                    1.81
                 ],
                 "kv": [
                     2.5,
@@ -7405,10 +7405,10 @@
             "ticker": "2CAR.MI",
             "nome": "2x Long Carbon",
             "categoria": "COMMODITIES",
-            "price": 13.216,
-            "kama_v": 12.975,
-            "kama_l": 12.502,
-            "status": "BUY",
+            "price": 12.586,
+            "kama_v": 12.966,
+            "kama_l": 12.488,
+            "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
                 "prices": [
@@ -7591,7 +7591,7 @@
                     12.71,
                     12.71,
                     13.18,
-                    13.22
+                    12.59
                 ],
                 "kv": [
                     17.3,
@@ -7955,7 +7955,7 @@
                     12.47,
                     12.47,
                     12.49,
-                    12.5
+                    12.49
                 ],
                 "dates": [
                     "27/08",
@@ -8145,9 +8145,9 @@
             "ticker": "3EDS.MI",
             "nome": "3x Short EuroStoxx",
             "categoria": "INDICI LEVA",
-            "price": 9.681,
-            "kama_v": 8.278,
-            "kama_l": 8.109,
+            "price": 10.2,
+            "kama_v": 8.3,
+            "kama_l": 8.169,
             "status": "BUY",
             "signal_date": "15/05/2026",
             "history": {
@@ -8331,7 +8331,7 @@
                     8.52,
                     8.52,
                     8.52,
-                    9.68
+                    10.2
                 ],
                 "kv": [
                     12.88,
@@ -8513,7 +8513,7 @@
                     8.24,
                     8.25,
                     8.25,
-                    8.28
+                    8.3
                 ],
                 "kl": [
                     12.88,
@@ -8695,7 +8695,7 @@
                     8.04,
                     8.05,
                     8.06,
-                    8.11
+                    8.17
                 ],
                 "dates": [
                     "25/08",
@@ -9625,9 +9625,9 @@
             "ticker": "3SIS.MI",
             "nome": "3x Short Silver",
             "categoria": "COMMODITIES",
-            "price": 13.284,
+            "price": 13.264,
             "kama_v": 10.772,
-            "kama_l": 13.174,
+            "kama_l": 13.173,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -9811,7 +9811,7 @@
                     10.74,
                     8.98,
                     10.02,
-                    13.28
+                    13.26
                 ],
                 "kv": [
                     0.25,
@@ -13325,9 +13325,9 @@
             "ticker": "3USS.MI",
             "nome": "3x Short S&P 500",
             "categoria": "INDICI LEVA",
-            "price": 6.492,
-            "kama_v": 7.328,
-            "kama_l": 6.574,
+            "price": 6.494,
+            "kama_v": 7.329,
+            "kama_l": 6.575,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -14805,7 +14805,7 @@
             "ticker": "LPLA.MI",
             "nome": "2x Long Platinum",
             "categoria": "COMMODITIES",
-            "price": 3.841,
+            "price": 3.846,
             "kama_v": 4.346,
             "kama_l": 4.086,
             "status": "WAIT",
@@ -14991,7 +14991,7 @@
                     4.26,
                     4.68,
                     4.21,
-                    3.84
+                    3.85
                 ],
                 "kv": [
                     2.5,
@@ -15545,9 +15545,9 @@
             "ticker": "LNIK.MI",
             "nome": "2x Long Nickel",
             "categoria": "COMMODITIES",
-            "price": 15.77,
-            "kama_v": 15.619,
-            "kama_l": 16.856,
+            "price": 15.712,
+            "kama_v": 15.617,
+            "kama_l": 16.848,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -15731,7 +15731,7 @@
                     16.39,
                     16.93,
                     16.41,
-                    15.77
+                    15.71
                 ],
                 "kv": [
                     12.12,
@@ -16095,7 +16095,7 @@
                     16.96,
                     16.96,
                     16.94,
-                    16.86
+                    16.85
                 ],
                 "dates": [
                     "25/08",
@@ -17025,9 +17025,9 @@
             "ticker": "3NGS.MI",
             "nome": "3x Short Nat Gas",
             "categoria": "COMMODITIES",
-            "price": 12.93,
-            "kama_v": 12.96,
-            "kama_l": 13.157,
+            "price": 12.83,
+            "kama_v": 12.957,
+            "kama_l": 13.151,
             "status": "SELL",
             "signal_date": "15/05/2026",
             "history": {
@@ -17211,7 +17211,7 @@
                     13.58,
                     13.37,
                     13.14,
-                    12.93
+                    12.83
                 ],
                 "kv": [
                     22.6,
@@ -17575,7 +17575,7 @@
                     13.17,
                     13.17,
                     13.17,
-                    13.16
+                    13.15
                 ],
                 "dates": [
                     "26/08",
@@ -19245,9 +19245,9 @@
             "ticker": "SNGA.MI",
             "nome": "2x Short Nat Gas",
             "categoria": "COMMODITIES",
-            "price": 452.04,
+            "price": 452.08,
             "kama_v": 433.959,
-            "kama_l": 448.331,
+            "kama_l": 448.332,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -19431,7 +19431,7 @@
                     458.56,
                     457.11,
                     455.83,
-                    452.04
+                    452.08
                 ],
                 "kv": [
                     422.65,
@@ -19985,8 +19985,8 @@
             "ticker": "QQQS.MI",
             "nome": "3x Short Nasdaq",
             "categoria": "INDICI LEVA",
-            "price": 1.573,
-            "kama_v": 1.964,
+            "price": 1.576,
+            "kama_v": 1.965,
             "kama_l": 1.616,
             "status": "WAIT",
             "signal_date": "15/05/2026",
@@ -20171,7 +20171,7 @@
                     1.63,
                     1.57,
                     1.5,
-                    1.57
+                    1.58
                 ],
                 "kv": [
                     3.16,
@@ -22945,9 +22945,9 @@
             "ticker": "LBUL.MI",
             "nome": "2x Long Gold",
             "categoria": "COMMODITIES",
-            "price": 186.31,
-            "kama_v": 202.838,
-            "kama_l": 192.877,
+            "price": 186.51,
+            "kama_v": 202.844,
+            "kama_l": 192.885,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -23131,7 +23131,7 @@
                     194.32,
                     197.46,
                     197.52,
-                    186.31
+                    186.51
                 ],
                 "kv": [
                     116.26,
@@ -23685,7 +23685,7 @@
             "ticker": "SBUL.MI",
             "nome": "2x Short Gold",
             "categoria": "COMMODITIES",
-            "price": 6.488,
+            "price": 6.486,
             "kama_v": 6.291,
             "kama_l": 6.333,
             "status": "WAIT",
@@ -24425,9 +24425,9 @@
             "ticker": "3ITL.MI",
             "nome": "3x Long FTSE MIB",
             "categoria": "INDICI LEVA",
-            "price": 464.05,
-            "kama_v": 421.302,
-            "kama_l": 452.51,
+            "price": 463.55,
+            "kama_v": 421.287,
+            "kama_l": 452.497,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -24611,7 +24611,7 @@
                     463.86,
                     476.17,
                     491.66,
-                    464.05
+                    463.55
                 ],
                 "kv": [
                     313.33,
@@ -24793,7 +24793,7 @@
                     417.0,
                     418.35,
                     420.68,
-                    421.3
+                    421.29
                 ],
                 "kl": [
                     328.77,
@@ -24975,7 +24975,7 @@
                     447.92,
                     449.11,
                     452.33,
-                    452.51
+                    452.5
                 ],
                 "dates": [
                     "27/08",
@@ -25165,10 +25165,10 @@
             "ticker": "3BAL.MI",
             "nome": "3x Long Banks",
             "categoria": "SETTORIALI",
-            "price": 55.96,
-            "kama_v": 56.007,
-            "kama_l": 56.446,
-            "status": "SELL",
+            "price": 56.01,
+            "kama_v": 56.008,
+            "kama_l": 56.447,
+            "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
                 "prices": [
@@ -25351,7 +25351,7 @@
                     55.81,
                     56.74,
                     58.76,
-                    55.96
+                    56.01
                 ],
                 "kv": [
                     44.1,
@@ -25905,8 +25905,8 @@
             "ticker": "3EUS.MI",
             "nome": "3x Short EUR/USD",
             "categoria": "FOREX",
-            "price": 19.678,
-            "kama_v": 14.237,
+            "price": 19.64,
+            "kama_v": 14.238,
             "kama_l": 19.851,
             "status": "WAIT",
             "signal_date": "15/05/2026",
@@ -26091,7 +26091,7 @@
                     19.87,
                     19.49,
                     18.61,
-                    19.68
+                    19.64
                 ],
                 "kv": [
                     0.21,
@@ -27385,9 +27385,9 @@
             "ticker": "3EMS.MI",
             "nome": "3x Short Em. Markets",
             "categoria": "INDICI LEVA",
-            "price": 0.827,
-            "kama_v": 0.878,
-            "kama_l": 0.742,
+            "price": 0.81,
+            "kama_v": 0.877,
+            "kama_l": 0.743,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -27571,7 +27571,7 @@
                     0.73,
                     0.74,
                     0.74,
-                    0.83
+                    0.81
                 ],
                 "kv": [
                     2.18,
@@ -28125,9 +28125,9 @@
             "ticker": "3EML.MI",
             "nome": "3x Long Em. Markets",
             "categoria": "INDICI LEVA",
-            "price": 160.83,
-            "kama_v": 146.766,
-            "kama_l": 166.682,
+            "price": 159.5,
+            "kama_v": 146.73,
+            "kama_l": 166.672,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -28311,7 +28311,7 @@
                     157.7,
                     173.18,
                     175.21,
-                    160.83
+                    159.5
                 ],
                 "kv": [
                     81.38,
@@ -28493,7 +28493,7 @@
                     144.49,
                     145.47,
                     146.52,
-                    146.77
+                    146.73
                 ],
                 "kl": [
                     82.12,
@@ -28675,7 +28675,7 @@
                     165.34,
                     166.01,
                     166.83,
-                    166.68
+                    166.67
                 ],
                 "dates": [
                     "26/08",
@@ -29605,9 +29605,9 @@
             "ticker": "3DEL.MI",
             "nome": "3x Long DAX",
             "categoria": "INDICI LEVA",
-            "price": 22.895,
-            "kama_v": 354.121,
-            "kama_l": 146.716,
+            "price": 22.875,
+            "kama_v": 354.119,
+            "kama_l": 146.709,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -29791,7 +29791,7 @@
                     23.01,
                     23.38,
                     24.38,
-                    22.9
+                    22.88
                 ],
                 "kv": [
                     524.76,
@@ -30155,7 +30155,7 @@
                     351.01,
                     263.39,
                     200.29,
-                    146.72
+                    146.71
                 ],
                 "dates": [
                     "25/08",
@@ -31085,7 +31085,7 @@
             "ticker": "LCOP.MI",
             "nome": "2x Long Copper",
             "categoria": "COMMODITIES",
-            "price": 11.02,
+            "price": 11.032,
             "kama_v": 10.363,
             "kama_l": 11.238,
             "status": "WAIT",
@@ -31271,7 +31271,7 @@
                     11.76,
                     12.33,
                     12.11,
-                    11.02
+                    11.03
                 ],
                 "kv": [
                     6.44,
@@ -31825,9 +31825,9 @@
             "ticker": "LCFE.MI",
             "nome": "2x Long Coffee",
             "categoria": "COMMODITIES",
-            "price": 1.993,
+            "price": 1.989,
             "kama_v": 2.477,
-            "kama_l": 2.313,
+            "kama_l": 2.312,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -32565,7 +32565,7 @@
             "ticker": "LCOC.MI",
             "nome": "2x Long Cocoa",
             "categoria": "COMMODITIES",
-            "price": 10.546,
+            "price": 10.552,
             "kama_v": 10.59,
             "kama_l": 11.904,
             "status": "SELL",
@@ -34045,9 +34045,9 @@
             "ticker": "3BUS.MI",
             "nome": "3x Long Brent",
             "categoria": "COMMODITIES",
-            "price": 71.24,
-            "kama_v": 69.758,
-            "kama_l": 70.637,
+            "price": 71.87,
+            "kama_v": 69.828,
+            "kama_l": 70.917,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -34231,7 +34231,7 @@
                     70.16,
                     70.16,
                     70.16,
-                    71.24
+                    71.87
                 ],
                 "kv": [
                     66.73,
@@ -34413,7 +34413,7 @@
                     69.56,
                     69.57,
                     69.57,
-                    69.76
+                    69.83
                 ],
                 "kl": [
                     66.97,
@@ -34595,7 +34595,7 @@
                     70.15,
                     70.15,
                     70.15,
-                    70.64
+                    70.92
                 ],
                 "dates": [
                     "27/08",
@@ -35525,9 +35525,9 @@
             "ticker": "LAGR.MI",
             "nome": "2x Long Agriculture",
             "categoria": "COMMODITIES",
-            "price": 7.15,
-            "kama_v": 6.755,
-            "kama_l": 7.139,
+            "price": 6.953,
+            "kama_v": 6.753,
+            "kama_l": 7.137,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -35711,7 +35711,7 @@
                     7.39,
                     7.65,
                     7.15,
-                    7.15
+                    6.95
                 ],
                 "kv": [
                     6.04,
@@ -35893,7 +35893,7 @@
                     6.71,
                     6.75,
                     6.75,
-                    6.76
+                    6.75
                 ],
                 "kl": [
                     6.25,
@@ -37005,9 +37005,9 @@
             "ticker": "BTC-USD",
             "nome": "Bitcoin",
             "categoria": "CRYPTO",
-            "price": 79138.844,
-            "kama_v": 76342.809,
-            "kama_l": 79058.067,
+            "price": 79329.789,
+            "kama_v": 76343.361,
+            "kama_l": 79062.525,
             "status": "WAIT",
             "signal_date": "15/05/2026",
             "history": {
@@ -37191,7 +37191,7 @@
                     80477.49,
                     79277.12,
                     81051.25,
-                    79138.84
+                    79329.79
                 ],
                 "kv": [
                     100484.55,
@@ -37373,7 +37373,7 @@
                     76174.56,
                     76214.99,
                     76290.57,
-                    76342.81
+                    76343.36
                 ],
                 "kl": [
                     99054.56,
@@ -37555,7 +37555,7 @@
                     79012.65,
                     79015.98,
                     79055.77,
-                    79058.07
+                    79062.52
                 ],
                 "dates": [
                     "17/11",
@@ -37745,9 +37745,9 @@
             "ticker": "ETH-USD",
             "nome": "Ethereum",
             "categoria": "CRYPTO",
-            "price": 2221.6,
-            "kama_v": 2272.141,
-            "kama_l": 2277.199,
+            "price": 2227.3,
+            "kama_v": 2272.395,
+            "kama_l": 2277.954,
             "status": "SELL",
             "signal_date": "15/05/2026",
             "history": {
@@ -37931,7 +37931,7 @@
                     2274.64,
                     2257.58,
                     2280.93,
-                    2221.6
+                    2227.3
                 ],
                 "kv": [
                     3306.85,
@@ -38113,7 +38113,7 @@
                     2274.29,
                     2273.93,
                     2274.08,
-                    2272.14
+                    2272.39
                 ],
                 "kl": [
                     3289.89,
@@ -38295,7 +38295,7 @@
                     2284.2,
                     2283.2,
                     2283.12,
-                    2277.2
+                    2277.95
                 ],
                 "dates": [
                     "17/11",
